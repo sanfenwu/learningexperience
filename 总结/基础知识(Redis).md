@@ -17,6 +17,12 @@ aof:
 ###2、redis跳表
 是一种有序的数据结构，通过每个节点指向其他节点的指针，打到快速访问节点的目的
 ![跳表](/image/skipList.png)
+###3、bitmap类型
+由0和1状态表现的二进制数组。常用与统计
+setbit key offset value
+
+    eg（统计每月签到）：setbit sign:userid:202101 18 1
+
 
 
 
