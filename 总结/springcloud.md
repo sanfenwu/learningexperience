@@ -1,55 +1,6 @@
-#第二期
-##基础
-###1、reids持久化
-rdb:
-
-    1、触发，执行bgsave
-    2、redis进程fork子进程进行持久化，等持久化完成替换就得rdb文件
-    3、是经过压缩的二进制文件，占用的空间比较小
-    4、在恢复大的数据集时，速度比aof快
-aof:
-
-    1、aof如果没有初始化，如果存在就读取
-    2、redis接收指令，每个指令添加aof文件，当文件大小达到一定大小时rewrite
-    或者手动调用bgRewriteaOf
-    3、fork出一个子进程，而父进程继续接受命令，现在所写的指令放在aof_rewrite_buf_block缓冲中
-    4、当子进程rewrite结束后，父进程今收到子进程的信号，将缓冲中的内容添加到文件中，切换aof文件的fd。（先写临时文件最后rename替换）
-###2、redis跳表
-是一种有序的数据结构，通过每个节点指向其他节点的指针，打到快速访问节点的目的
-![跳表](/image/skipList.png)
-###3、aqs（abstractQueuedSynchronizer）及原理
-        
-        1、AQS是一个同步器，要做的事情相当于一个锁，所以会有两个动作：一个获取，一个释放
-        需要一个标志是否被用，如果被获取了再有其他的，需要排队，有一个队列。
-        2、AQS的核心思想：通过一个volatile修饰的int属性state代表同步状态，例如0是无锁，1是上锁状态
-        多线程竞争资源时，通过CAS的方式修改state，修改成功的线程则代表竞争资源成功的线程，竞争失败的则放在（CLS=）FIFO队列
-        3、是juc（java.util.concurrent）下lock包里的类，实现了FIFO的队列（先进先出），底层是双向链表。
-        里面有state变量、加锁线程变量等核心，维护了加锁状态，因为他可以判断当前加锁的线程是自己，所以可重入
-        4、AQS中提供两套锁机制：共享锁与独占锁
-        （1）、共享锁：多线程同时执行，线程执行个数受到state限制
-        （2）、独占锁：当前只有一个线程能够运行reentrantlock
-            a、公平锁：所有线程严格按照FIFo占有锁
-            b、非公平锁：每个线程不管是否有等待线程等待，都会先尝试抢占锁，抢占锁失败再去clh队列等待锁资源释放
-###4、synchronized和lock区别
-        1、lock是一个接口，Synchronized是java关键字，synchronized是内置语言实现的。
-        2、Synchronized，异常释放锁，不会死锁。lock异常不会释放锁，需要手动lock
-        3、lock锁可以在程序过程中用interrupt来终端等待，Synchronized只能等待锁的释放，不能相应中断
-        4、trylock可以知道是否获取到锁的情况
-        5、synchronized可以作用到方法、代码块，lock一般加在代码块上
-        6、锁类型，lock通过cas实现的乐观锁，Synchronized则是使用操作系统互斥量实现的悲观锁
-###5、juc下常见的包
-    atomic、locks、concurrentHashMap、CopyOnWriteArrayList\Executor
-###6、io模型
-|名称|阻塞|同步（1）/异步（0）|模型名称| 
-|---|---|---|---|
-|BIO|√|1|同步阻塞|
-|NIO|×|1|同步非阻塞|
-|io多路复用|√|1|同步阻塞|
-|信号驱动io|×|1| 同步非阻塞|
-|AIO|错|0|异步非阻塞|
-###7、tcp三次握手四次挥手以及各个时期的状态
-![tcp协议](/image/tcp.jpeg)
-###8、EUREKA
+#第六期
+##springcloud
+**1、EUREKA**
  （1）、EUREKA端要实现的功能
         
         1、接受注册
@@ -99,7 +50,7 @@ aof:
         8、服务调用时eureka client会先从本地缓存中查找，如果获取不到，先从注册中心刷新注册表，在同步到本地缓存
         9、Eureka获取目标服务器信息，发起服务调用
         10、Eureka client 程序关闭时向Eureka server发送取消请求，eureka server将客户端实例从注册表中删除
-###9、Feign 
+**2、Feign** 
 
     （1）、通过使用feign就是用一个注解定义一个feignclient接口，然后调用那个接口就可以了，feignclient会在底层根据你的注解
     跟你指定的服务，建立连接、构造请求、发起请求、获取响应、解析响应等等  
