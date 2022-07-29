@@ -18,7 +18,7 @@ aof:
 是一种有序的数据结构，通过每个节点指向其他节点的指针，打到快速访问节点的目的
 ![跳表](/image/skipList.png)
 ###3、bitmap类型
-由0和1状态表现的二进制数组。常用与统计
+由0和1状态表现的二进制数组(常用于统计)，二进制安全。
 setbit key offset value
 
     （1）、使用userid和时间作为key，日期作为offset
@@ -29,6 +29,7 @@ setbit key offset value
     （3）、bitfield（连续签到）：实现连续签到多少天： 
     签到方式：setbit（userid+date，日期减一，true）
     bitfield k3 get u3（u+数量） 0(从第0位开始)
+    问题：人名做key所以随着用户的增加压力变大
     （4）、bitop（做统计使用）：
                 AND: 与运算符（&） 两个同时为1，结果为1，否则为0  
                 OR:  或运算（|） 一个为1，其值为1
@@ -75,7 +76,50 @@ setbit key offset value
     (3)、设置最大清除内存：maxmemory
          设置淘汰机制：maxmemory-policy
          设置统计采样数：maxmemory-samples在LRU的基础下
-![](/image/redis2.png)         
+![](/image/redis2.png)
+###6、redis基本类型及基本操作
+    String
+    （1）、set： set key value ex（key过期时间s） px（key的过期时间ms） nx （不存在赋值） xx（存在赋值）
+    （2）、append： append key value 给key的值添加vallue
+    （3）、incr、incrby、incrbyfloat：计算添加1、给定值、给定浮点类型
+    （4）、getrange、setrange：范围内取，范围内覆盖
+    （5）、strLen key： 长度 
+    map
+    （1）、hset/hget/hmset/hmget/hgetall： hset key field value 
+    （2）、hkeys/hvals: hkeys key
+    （3）、hincrby/hincrbyflaot： hincrby key filed int
+    （4）、hexists:hexists key filed 是否存在
+    （5）、hdel：hdel key field [field] 删除一个或多个属性
+    list
+    （1）、lpush/rpush/lpop/rpop:lpush key value 正反向实现队列/栈
+    （2）、blpop、brpop：blpop key timeout 阻塞单播队列，fifo
+    （3）、lindex/lset ：Lindex key index /lset key index value 模拟数组操作
+    （4）、linsert/ltrim:linsert key before/after value 在第一个出现的元素之前之后插数
+          ltrim key start stop ；删除规定范围内的值
+    （5）、lrem：lrem key count（-1、0、1） value 
+          -1的时候从后面删除给定的数的值，1前面，0，所有
+    set
+    （1）、sadd/srem/scard/smembers: sadd key member 添加，移除,统计,查询
+    （2）、sdiff/sdiffstore/sinter/sinterstore/sunion/sunionstore:
+           差集存储/交集存储/并集存储
+    （3）、srandmember： srandmember key count （抽奖）
+            count正数，不会重复可能不够，负数一定满足数量，但是有可能重复
+    zset
+    （1）、zadd：zadd key[nx:xx] score member 添加元素
+    （2）、zcard：zcard key 统计key的数量
+    （3）、zcount：zcount min max 查询范围内的数量
+    （4）、zincrby：zincrby key num member 给元素增加评分
+    （5）、zinterstore/zunionstore：zinterstore  newkey key的数量 key1 key2
+     weights 权重1 权重2 aggregate sum
+    （6）、zrange/zrevrange： zrange key start end 正向反向查询（排行榜）
+    pub/sub
+    （1）、subscribe/publish:subscribe topic /publish topic info订阅/推送
+    （2）、psubscribe：psubscribe 规则 订阅符合条件的多个
+    
+   ![](/image/redis3.png)
+    
+    
+         
          
    
          
