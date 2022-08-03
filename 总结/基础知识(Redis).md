@@ -1,6 +1,6 @@
 #第二期
 ##基础
-###1、reids持久化
+###1、reids持久化一
 rdb:
 
     1、触发，执行bgsave
@@ -154,7 +154,27 @@ setbit key offset value
 
     5、原理：linux中父子进程
         （1）、读时共享，写时复制，降低内存消耗、减少复制所使用的时间
+###10、redis持久化二
+    1、dump.rdb
+    优点：体积小，大数据集恢复快
+    缺点：不安全，不能拉链就一个
+    触发：save，bgsave，配置文件条件达到，主从复制，flushALL,shutdown
+    2、appendonly.aof
+    优点：数据安全，体积过大时可以重写
+    缺点：相同的数据集aof文件体积大
+    触发：bgrewrite，auto-aof-rewrite-min-size 64mb,auto-aof-rewrite-percentage 100
+    appendfsync选项
+    always： 每执行一个事件就把aof缓冲区的内容强制性的写入硬盘上的aof文件里，保证了数据持久化的完整性，
+    
+    everysec：每隔一秒才会进行一次文件同步，把内存缓冲区里的aof缓存数据真正写入aof文件，极端情况下会丢失一秒数据
+    
+    no：默认系统的缓存区写入磁盘机制，不做程序强制，安全性和完整性相对差一点
+    
+    3、redis4.0之前rewrite就是合并重复指令，删除无效指令 
+       redis4.0之后新型混合持久化：对已有的数据进行rdb处理 ，后续继续补充指令
+    4、数据恢复，只有某一种，就按照某一种，同时存在两种则按aof恢复
          
+       
    
          
 
