@@ -1,6 +1,7 @@
 #第六期
 ##springcloud
 **1、EUREKA**
+ 
  （1）、EUREKA端要实现的功能
         
         1、接受注册
