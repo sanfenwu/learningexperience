@@ -65,6 +65,13 @@ java五种不同状态下Mark Word的表现形式
     （1）、jinfo 列举jvm相关信息
     （2）、jstat -gc pid ms ：多长时间打印一次gc信息
     （3）、jmap -histo pid | head 20：查询当前进程堆中对象信息
+**6、实例属性赋值时机**
+
+    1、final修饰的实例属性，在实例创建的时候才会赋值
+    2、static修饰的属性类，在类加载的准备阶段赋初值，初始化阶段赋值
+    3、static final 修饰的String类型或者基本类型常量，jvm规范是在初始化阶段，但是hotspot VM直接在准备
+    阶段就赋值了
+    4、static final 修改引用类型常量，同2
           
                 
            
