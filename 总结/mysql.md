@@ -127,7 +127,12 @@
             通过binlog_cache_size来控制大小，先把binlog日志写在这个binlog_cache里面，如果超过这个大小先暂存磁盘
             事务提交的时候，执行器吧binlog_cache中的binlog写入到binlog中，并清空binlog_cache.
     sync_binlog=0/1/n:每次提交事务都会write，不fsync/每次都fsync/每次都write在经过n在fsync（类比aof）
-    
+**17、count（\*）和count（1）**
+
+    count(*),经过优化器优化取行数，
+    count（1），也是取行数并赋个1；
+    实际上效率是差不多的
+   
 
           
 

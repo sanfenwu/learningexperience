@@ -173,7 +173,10 @@ setbit key offset value
     3、redis4.0之前rewrite就是合并重复指令，删除无效指令 
        redis4.0之后新型混合持久化：对已有的数据进行rdb处理 ，后续继续补充指令
     4、数据恢复，只有某一种，就按照某一种，同时存在两种则按aof恢复
-         
+###11、redis小札
+    1、一个String能存512mb
+    
+     
        
    
          
