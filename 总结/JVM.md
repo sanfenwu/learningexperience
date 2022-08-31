@@ -72,7 +72,11 @@ java五种不同状态下Mark Word的表现形式
     3、static final 修饰的String类型或者基本类型常量，jvm规范是在初始化阶段，但是hotspot VM直接在准备
     阶段就赋值了
     4、static final 修改引用类型常量，同2
-          
+**7、内存磁盘速度**          
+    
+    1、DDR读取速度达到每秒10G
+    2、固态硬盘速度是300m/s
+    3、机械硬盘的速度100m/s
                 
            
        
