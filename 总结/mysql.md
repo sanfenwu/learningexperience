@@ -132,7 +132,35 @@
     count(*),经过优化器优化取行数，
     count（1），也是取行数并赋个1；
     实际上效率是差不多的
-   
+**18、explain解析sql**   
+![](/image/explain1.png)
+
+    （1）、id:相同/不同：
+    id相同：可能认为是一组，从上往下的顺序执行
+    id不同：id值越大，优先级越高
+    （2）、select_type类型说明
+|名称|特点|
+|---|---|
+|simple|简单的查询|
+|primary|查询时包含复杂子部分|
+|subquery|在select或where列表包含子查询|
+|derived|from列表包含子查询为衍生derived|
+    
+    （3）、type：system>const>eq_ref>ref>range>index>ALL
+    效率依次降低
+    （4）、Possible_keys：2个索引条件查询mysql，mysql自己可能用不到2个(实际中)
+    （5）、Key：实际使用到的索引，null就是没有
+    （6）、Key_len：索引字段的最大可能长度，不是实际使用长度
+    （7）、Ref：索引哪一列被使用了
+    （8）、Rows：根据表统计信息及
+    （9）、extra：
+|名称|特性|优化| 
+|---|---|---|
+|Using filesort|使用order by关键字的时候无法通过索引直接排序|(1)、不用order by 在业务层面排序<br>(2)、将排序字段作为索引
+|Using index|使用索引，索引能覆盖所有的查询字段，无需回表查询默认情况最优||
+|Using where|当前查询不能被索引覆盖可能会回表，效率比前者低||
+|Using where;using index|查询的列被索引覆盖，且where筛选条件是索引列前导列的一个范围，或者是索引列的非前导列|所谓前导列，就是在创建复合索引语句的第一列或者连续的多列<br>不会最左原则索引失效吗？|                                                                                
+  
 
           
 
