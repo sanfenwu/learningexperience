@@ -85,6 +85,7 @@ setbit key offset value
          设置统计采样数：maxmemory-samples在LRU的基础下
 ![](/image/redis2.png)
 ###6、redis基本类型及基本操作
+
     String
     （1）、set： set key value ex（key过期时间s） px（key的过期时间ms） nx （不存在赋值） xx（存在赋值）
     （2）、append： append key value 给key的值添加vallue
